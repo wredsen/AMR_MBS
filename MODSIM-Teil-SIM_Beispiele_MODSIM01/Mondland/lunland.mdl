@@ -1,0 +1,567 @@
+Model {
+  Name			  "lunland"
+  Version		  2.20
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  InvariantConstants	  off
+  WideVectorLines	  off
+  ShowLineWidths	  off
+  StartTime		  "0.0"
+  StopTime		  "400"
+  Solver		  ode45
+  RelTol		  "1e-3"
+  AbsTol		  "1e-3"
+  Refine		  "1"
+  MaxStep		  "0.5"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  SimulationMode	  normal
+  RTWSystemTargetFile	  "grt.tlc"
+  RTWInlineParameters	  off
+  RTWPlaceOutputsASAP	  off
+  RTWRetainRTWFile	  off
+  RTWTemplateMakefile	  "grt_default_tmf"
+  RTWMakeCommand	  "make_rtw"
+  RTWGenerateCodeOnly	  off
+  ExtModeMexFile	  "ext_comm"
+  ExtModeBatchMode	  off
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "lunland"
+    Location		    [7, 72, 594, 271]
+    Open		    on
+    ToolBar		    on
+    StatusBar		    on
+    ScreenColor		    white
+    PaperOrientation	    landscape
+    PaperPositionMode	    auto
+    PaperType		    usletter
+    PaperUnits		    inches
+    Block {
+      BlockType		      Constant
+      Name		      "Aus"
+      Position		      [15, 55, 35, 75]
+      Value		      "0"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [15, 10, 35, 30]
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "F1"
+      Position		      [15, 155, 35, 175]
+      Value		      "F1"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "F2"
+      Position		      [15, 105, 35, 125]
+      Value		      "F2"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Int(a)"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [385, 80, 415, 110]
+      ExternalReset	      none
+      InitialConditionSource  internal
+      InitialCondition	      "v0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Int(m')"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [240, 150, 270, 180]
+      ExternalReset	      none
+      InitialConditionSource  internal
+      InitialCondition	      "m0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Int(v)"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [445, 80, 475, 110]
+      ExternalReset	      none
+      InitialConditionSource  internal
+      InitialCondition	      "h0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Inv"
+      Position		      [210, 80, 240, 110]
+      Expr		      "1/u"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [625, 16, 655, 49]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux1"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [625, 96, 655, 129]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Product
+      Name		      "Product"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [260, 66, 290, 104]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Stop
+      Name		      "StopSim"
+      Position		      [560, 165, 600, 185]
+      ForegroundColor	      magenta
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [330, 77, 360, 108]
+      Inputs		      "+-"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "T1"
+      Position		      [75, 95, 105, 125]
+      Threshold		      "T1"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "T2"
+      Position		      [125, 60, 155, 90]
+      Threshold		      "T2"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "Vector v"
+      Position		      [740, 67, 790, 83]
+      VariableName	      "v"
+      Buffer		      "5000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "XY Graph"
+      Ports		      [2, 0, 0, 0, 0]
+      Position		      [680, 155, 710, 190]
+      SourceBlock	      "simulink/Sinks/XY Graph"
+      SourceType	      "XY scope."
+      xmin		      "-2000"
+      xmax		      "0"
+      ymin		      "0"
+      ymax		      "60000"
+      st		      "-1"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "g(h)"
+      Position		      [350, 149, 430, 181]
+      Orientation	      left
+      Expr		      "c2/(r+u)^2"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "h,v"
+      Ports		      [1, 0, 0, 0, 0]
+      Position		      [680, 100, 710, 130]
+      Floating		      off
+      Location		      [316, 280, 630, 475]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "250"
+      YMin		      "-1"
+      YMax		      "1"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "h<=0?"
+      Position		      [520, 164, 545, 186]
+      ForegroundColor	      magenta
+      Expr		      "u<=0"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "m'(thrust)"
+      Position		      [150, 149, 220, 181]
+      Expr		      "-c1*abs(u)"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "scal_h"
+      Position		      [560, 125, 600, 145]
+      Expr		      "u / 60000"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "scal_m"
+      Position		      [560, 45, 600, 65]
+      Expr		      "(u-400) / 800 - 1"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "scal_t"
+      Position		      [560, 5, 600, 25]
+      Expr		      "u / 40000"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "scal_v"
+      Position		      [560, 85, 600, 105]
+      Expr		      "u / 2100 "
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "thrust,m"
+      Ports		      [1, 0, 0, 0, 0]
+      Position		      [680, 20, 710, 50]
+      Floating		      off
+      Location		      [6, 280, 319, 475]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "250"
+      YMin		      "-1"
+      YMax		      "1"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Line {
+      SrcBlock		      "Product"
+      SrcPort		      1
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Inv"
+      SrcPort		      1
+      DstBlock		      "Product"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "Int(a)"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "g(h)"
+      SrcPort		      1
+      Points		      [-30, 0]
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "T1"
+      SrcPort		      1
+      DstBlock		      "T2"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "F1"
+      SrcPort		      1
+      Points		      [15, 0; 0, -45]
+      DstBlock		      "T1"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "F2"
+      SrcPort		      1
+      Points		      [0, -15]
+      DstBlock		      "T1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Aus"
+      SrcPort		      1
+      DstBlock		      "T2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      Points		      [10, 0; 0, 55]
+      Branch {
+	Points			[0, 35]
+	DstBlock		"T1"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"T2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "m'(thrust)"
+      SrcPort		      1
+      DstBlock		      "Int(m')"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "T2"
+      SrcPort		      1
+      Points		      [10, 0]
+      Branch {
+	DstBlock		"Product"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 60; -35, 0]
+	DstBlock		"m'(thrust)"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -60]
+	DstBlock		"scal_t"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      DstBlock		      "thrust,m"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "scal_t"
+      SrcPort		      1
+      Points		      [0, 10]
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "scal_m"
+      SrcPort		      1
+      Points		      [0, -15]
+      DstBlock		      "Mux"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Int(m')"
+      SrcPort		      1
+      Points		      [10, 0; 0, -30; -100, 0; 0, -40]
+      Branch {
+	DstBlock		"Inv"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -40]
+	DstBlock		"scal_m"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Int(a)"
+      SrcPort		      1
+      Points		      [10, 0]
+      Branch {
+	DstBlock		"Int(v)"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -20; 105, 0]
+	Branch {
+	  Points		  [0, 20]
+	  DstBlock		  "scal_v"
+	  DstPort		  1
+	}
+	Branch {
+	  Points		  [185, 0]
+	  Branch {
+	    Points		    [0, 75; -55, 0]
+	    DstBlock		    "XY Graph"
+	    DstPort		    1
+	  }
+	  Branch {
+	    DstBlock		    "Vector v"
+	    DstPort		    1
+	  }
+	}
+      }
+    }
+    Line {
+      SrcBlock		      "scal_v"
+      SrcPort		      1
+      Points		      [0, 10]
+      DstBlock		      "Mux1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "scal_h"
+      SrcPort		      1
+      Points		      [0, -15]
+      DstBlock		      "Mux1"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Mux1"
+      SrcPort		      1
+      DstBlock		      "h,v"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "h<=0?"
+      SrcPort		      1
+      DstBlock		      "StopSim"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Int(v)"
+      SrcPort		      1
+      Points		      [10, 0; 0, 40]
+      Branch {
+	DstBlock		"scal_h"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 30]
+	Branch {
+	  Points		  [0, 10]
+	  Branch {
+	    DstBlock		    "h<=0?"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 30; 175, 0]
+	    DstBlock		    "XY Graph"
+	    DstPort		    2
+	  }
+	}
+	Branch {
+	  DstBlock		  "g(h)"
+	  DstPort		  1
+	}
+      }
+    }
+    Annotation {
+      Position		      [367, 82]
+      VerticalAlignment	      top
+      Text		      "a"
+    }
+    Annotation {
+      Position		      [320, 62]
+      VerticalAlignment	      top
+      Text		      "thrust/m"
+    }
+    Annotation {
+      Position		      [322, 142]
+      VerticalAlignment	      top
+      Text		      "g"
+    }
+    Annotation {
+      Position		      [487, 82]
+      VerticalAlignment	      top
+      Text		      "h"
+    }
+    Annotation {
+      Position		      [427, 82]
+      VerticalAlignment	      top
+      Text		      "v"
+    }
+    Annotation {
+      Position		      [212, 57]
+      VerticalAlignment	      top
+      Text		      "thrust"
+    }
+    Annotation {
+      Position		      [217, 42]
+      VerticalAlignment	      top
+      Text		      "m"
+    }
+  }
+}

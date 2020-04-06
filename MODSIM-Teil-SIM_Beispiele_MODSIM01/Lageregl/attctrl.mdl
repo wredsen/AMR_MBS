@@ -1,0 +1,538 @@
+Model {
+  Name			  "attctrl"
+  Version		  2.20
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  InvariantConstants	  off
+  WideVectorLines	  off
+  ShowLineWidths	  off
+  StartTime		  "0.0"
+  StopTime		  "100"
+  Solver		  ode45
+  RelTol		  "1e-5"
+  AbsTol		  "1e-5"
+  Refine		  "1"
+  MaxStep		  ".02"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  SimulationMode	  normal
+  RTWSystemTargetFile	  "grt.tlc"
+  RTWInlineParameters	  off
+  RTWPlaceOutputsASAP	  off
+  RTWRetainRTWFile	  off
+  RTWTemplateMakefile	  "grt_default_tmf"
+  RTWMakeCommand	  "make_rtw"
+  RTWGenerateCodeOnly	  off
+  ExtModeMexFile	  "ext_comm"
+  ExtModeBatchMode	  off
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "attctrl"
+    Location		    [4, 72, 614, 286]
+    Open		    on
+    ToolBar		    on
+    StatusBar		    on
+    ScreenColor		    white
+    PaperOrientation	    landscape
+    PaperPositionMode	    auto
+    PaperType		    usletter
+    PaperUnits		    inches
+    Block {
+      BlockType		      Gain
+      Name		      "Gain"
+      Position		      [140, 87, 185, 113]
+      Gain		      "vr"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain1"
+      Position		      [480, 75, 530, 105]
+      Gain		      "180/pi"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "PSR Modulator"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [200, 74, 285, 126]
+      ForegroundColor	      magenta
+      ShowPortLabels	      off
+      System {
+	Name			"PSR Modulator"
+	Location		[68, 267, 514, 447]
+	Open			on
+	ToolBar			off
+	StatusBar		off
+	ScreenColor		white
+	PaperOrientation	landscape
+	PaperPositionMode	auto
+	PaperType		usletter
+	PaperUnits		inches
+	Block {
+	  BlockType		  Inport
+	  Name			  "Inport"
+	  Position		  [20, 35, 40, 55]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Abs
+	  Name			  "Abs"
+	  Position		  [175, 20, 205, 40]
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Ports			  [2, 1, 0, 0, 0]
+	  Position		  [295, 40, 325, 60]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Relay
+	  Name			  "Relay"
+	  Position		  [230, 15, 265, 45]
+	  OnSwitchValue		  "h_on"
+	  OffSwitchValue	  "h_off"
+	  OnOutputValue		  "b"
+	  OffOutputValue	  "0"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "Sign"
+	  Ports			  [1, 1, 0, 0, 0]
+	  Position		  [200, 67, 230, 93]
+	  ShowPortLabels	  off
+	  MaskType		  "Sign"
+	  MaskDescription	  "y = sign(x)"
+	  MaskHelp		  "Sign Function:\\n\\t\\t\\ty = 1 if x > 0\\n"
+"\\t\\t\\ty = 0 if x = 0\\n\\t\\t\\ty = -1 if x < 0"
+	  MaskDisplay		  "plot(-50,-50,50,50,[-50,50],[0,0],[0,0],[-5"
+"0,50],[-40,0],[-30,-30],[0,40],[30,30])"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  none
+	  MaskIconUnits		  autoscale
+	  System {
+	    Name		    "Sign"
+	    Location		    [159, 417, 467, 586]
+	    Open		    off
+	    ToolBar		    off
+	    StatusBar		    off
+	    ScreenColor		    white
+	    PaperOrientation	    landscape
+	    PaperPositionMode	    auto
+	    PaperType		    usletter
+	    PaperUnits		    inches
+	    Block {
+	      BlockType		      Inport
+	      Name		      "in_1"
+	      Position		      [35, 30, 55, 50]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Constant
+	      Name		      "Constant"
+	      Position		      [65, 105, 85, 125]
+	      Value		      "0"
+	    }
+	    Block {
+	      BlockType		      RelationalOperator
+	      Name		      "Relational\nOperator"
+	      Position		      [140, 32, 170, 63]
+	      Operator		      ">"
+	    }
+	    Block {
+	      BlockType		      RelationalOperator
+	      Name		      "Relational\nOperator1"
+	      Position		      [140, 92, 170, 123]
+	      Operator		      "<"
+	    }
+	    Block {
+	      BlockType		      Sum
+	      Name		      "Sum"
+	      Ports		      [2, 1, 0, 0, 0]
+	      Position		      [215, 64, 235, 91]
+	      Inputs		      "+-"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "out_1"
+	      Position		      [265, 70, 285, 90]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Line {
+	      SrcBlock		      "in_1"
+	      SrcPort		      1
+	      Points		      [35, 0]
+	      Branch {
+		DstBlock		"Relational\nOperator"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, 60]
+		DstBlock		"Relational\nOperator1"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Constant"
+	      SrcPort		      1
+	      Points		      [20, 0]
+	      Branch {
+		DstBlock		"Relational\nOperator1"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[0, -60]
+		DstBlock		"Relational\nOperator"
+		DstPort			2
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Relational\nOperator1"
+	      SrcPort		      1
+	      Points		      [10, 0; 0, -25]
+	      DstBlock		      "Sum"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Relational\nOperator"
+	      SrcPort		      1
+	      Points		      [10, 0; 0, 20]
+	      DstBlock		      "Sum"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Sum"
+	      SrcPort		      1
+	      DstBlock		      "out_1"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Ports			  [2, 1, 0, 0, 0]
+	  Position		  [100, 35, 155, 75]
+	  Inputs		  "+-"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn"
+	  Position		  [165, 121, 255, 159]
+	  Orientation		  left
+	  Numerator		  "[1]"
+	  Denominator		  "[TM 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Outport"
+	  Position		  [390, 40, 410, 60]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Abs"
+	  SrcPort		  1
+	  DstBlock		  "Relay"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Relay"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Inport"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sign"
+	  SrcPort		  1
+	  Points		  [45, 0]
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn"
+	  SrcPort		  1
+	  Points		  [-85, 0; 0, -75]
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  Branch {
+	    DstBlock		    "Outport"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 90]
+	    DstBlock		    "Transfer Fcn"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Abs"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "Sign"
+	    DstPort		    1
+	  }
+	}
+      }
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "PSR-out"
+      Ports		      [1, 0, 0, 0, 0]
+      Position		      [565, 147, 585, 173]
+      Floating		      off
+      Location		      [9, 455, 620, 653]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "auto"
+      YMin		      "-1.2"
+      YMax		      "1.2"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Sl.Gain"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [240, 15, 280, 45]
+      SourceBlock	      "simulink/Linear/Slider\nGain"
+      SourceType	      "Slider Gain"
+      low		      "0"
+      gain		      "0"
+      high		      "1"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Sl.Gain1"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [70, 15, 110, 45]
+      SourceBlock	      "simulink/Linear/Slider\nGain"
+      SourceType	      "Slider Gain"
+      low		      "0"
+      gain		      "1"
+      high		      "1"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [80, 82, 115, 118]
+      Inputs		      "+-"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum1"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [325, 72, 360, 108]
+      Inputs		      "++"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "dist_torque"
+      Position		      [175, 13, 205, 47]
+      Time		      "0"
+      Before		      "0"
+      After		      "m_stoer"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "phi [°]"
+      Ports		      [1, 0, 0, 0, 0]
+      Position		      [565, 74, 585, 106]
+      Floating		      off
+      Location		      [6, 276, 616, 475]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "auto"
+      YMin		      "-2"
+      YMax		      "5"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "phi_soll"
+      Position		      [10, 12, 40, 48]
+      Time		      "0"
+      Before		      "0"
+      After		      "phi_soll"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Name		      "spacecraft"
+      Position		      [385, 66, 450, 114]
+      Numerator		      "[1]"
+      Denominator	      "[isat 0 0]"
+    }
+    Line {
+      SrcBlock		      "Gain1"
+      SrcPort		      1
+      DstBlock		      "phi [°]"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum1"
+      SrcPort		      1
+      DstBlock		      "spacecraft"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "Gain"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "spacecraft"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Gain1"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 85; -390, 0]
+	DstBlock		"Sum"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "dist_torque"
+      SrcPort		      1
+      DstBlock		      "Sl.Gain"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sl.Gain"
+      SrcPort		      1
+      Points		      [15, 0; 0, 50]
+      DstBlock		      "Sum1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "phi_soll"
+      SrcPort		      1
+      DstBlock		      "Sl.Gain1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sl.Gain1"
+      SrcPort		      1
+      Points		      [10, 0; 0, 40; -65, 0; 0, 20]
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Gain"
+      SrcPort		      1
+      DstBlock		      "PSR Modulator"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "PSR Modulator"
+      SrcPort		      1
+      Points		      [10, 0]
+      Branch {
+	DstBlock		"Sum1"
+	DstPort			2
+      }
+      Branch {
+	Points			[0, 60]
+	DstBlock		"PSR-out"
+	DstPort			1
+      }
+    }
+  }
+}

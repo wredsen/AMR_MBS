@@ -27,11 +27,11 @@ if flag == 0 % Ausgabe der Anfangswerte f�r den
  % sie gilt so NUR in diesem Beispiel!
 elseif abs(flag) == 1 % Ausgabe der Ableitungen von x auf
  % Vektor sys = x' = f(x(t),u(t),t)
- sys = (1/Tm) * (u - x)
+ sys = (1/Tm) * (u - x);
 elseif flag == 3 % Ausgabe der Ausgangswerte des
  % Systems auf Vektor sys:
  % sys = y = g(x(t),u(t),t)
- sys = x %TODO: sinnvolle Annahme, dass y=x ?
+ sys = x; %TODO: sinnvolle Annahme, dass y=x ?
 else % bei anderen Flagwerten nichts ausgeben
  sys = [];
 end

@@ -2,12 +2,14 @@
 % Prof. K. Janschek, Dr.-Ing. Th. Range, Dr.-Ing. S. Dyblenko
 %y(t) = c_1 e^(-t/10) - 5 e^((1 - t)/10) θ(t - 1) + 5 θ(t - 
 % main_a1.m - Realisierung der VPG-Methode mit Fehlersch�tzung
-% f�r PT1-Glied
-% zu erg�nzende Codezeilen sind mit ">>> erg�nzen ...." und ...�gekennzeichnet
+% für PT1-Glied
+% zu ergänzende Codezeilen sind mit ">>> ergänzen ...." und ...�gekennzeichnet
 
 clear all % L�sche Arbeitsspeicher
 Tm = 10; % Konstante des PT1, [s]
 h = 0.1; % Schrittweite, (s)
+hneu = 0; %schrittweite für Schrittweitensteuerung
+halt = 0; %Schrittweite für Schrittweitensteuerung
 t0 = 0; % Integrationsbeginn, [s]
 tf = 300; % Integrationsende, [s]
 t = []; % Zeitwerte f�r Plot [s]
@@ -22,6 +24,11 @@ d(1) = 0;
 ti = t0;
 i = 1;
 while ti <= tf
+ 
+ if i > 1
+    h = stepWideControl(halt,Tm,ti,d,i);
+ end
+ 
  % Berechnung des Soll-Ausgangswertes: into WolframAlpha: y(t) =
  % 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0
  if ti < 1
@@ -52,11 +59,15 @@ while ti <= tf
  k2_exakt = system_pt1( ti + (h/2) , ys(i) + (h/2)*k1 , uStep(ti+(h/2)) , 1); % u(i) müsste eigentlich u(ti + h/2)
  k3_exakt = system_pt1( ti + h , ys(i) - h*k1 + 2*h*k2 , uStep(ti+h) , 1); % u(i) müsste eigentlich u(ti + h)
  d(i+1) = x(i+1) - x(i) - (h/6)*(k1_exakt + 4*k2_exakt + k3_exakt);
-
+ %approxd(i+1) = (h/6)*(k1-2*k2+k3)+d(i+1); %ist käse 
+ 
  t(i) = ti; % Zeitwert f�r Plot speichern
  ti = ti + h; % Zeitvariable um einen Schritt erh�hen
+ halt = h;
  i = i + 1; % Index inkrementieren
 end
+
+
 d = d(1:end-1);
 result = [t;d];
 % Anzeige der Ergebnisse
@@ -66,6 +77,25 @@ subplot(2,1,2); plot(t,y); title('Ausgang PT1-Glied');zoom on;grid on;
 xlabel('Zeit, s');
 figure(2);
 subplot(2,1,1); plot(t,y-ys,'.-'); title('GDF berechnet');zoom on;grid on;
-tit=sprintf('LDF gesch�tzt: max. Betrag = %g',max(abs(d)));
+tit=sprintf('LDF geschätzt: max. Betrag = %g',max(abs(d)));
 subplot(2,1,2); plot(t,d,'.-'); title(tit);zoom on;grid on;
 xlabel('Zeit, s');
+   
+function h = stepWideControl(halt,Tm,ti,d,i)
+
+
+epsilon = (halt^3/6)*abs((5/(3*Tm))*exp((1-ti)/Tm));
+hneu = halt*(epsilon/d(i))^(1/4)
+
+if hneu > 2*halt
+    
+    h = hneu    %continue integration with new stepsize
+    
+elseif (hneu <= halt)
+        
+    h = 0,75*hneu;  %repeat last integration step with new stepsize
+    
+else
+    h = halt; %continue integration without change of stepsize
+end
+end

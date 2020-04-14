@@ -4,3 +4,5 @@ function outU = uStep(t)
     else 
         outU = 5;
     end
+end 
+ 

@@ -8,11 +8,10 @@
 clear all % L�sche Arbeitsspeicher
 Tm = 10; % Konstante des PT1, [s]
 h = 0.1; % Schrittweite, (s)
-hneu = 0; %schrittweite für Schrittweitensteuerung
-halt = 0; %Schrittweite für Schrittweitensteuerung
 t0 = 0; % Integrationsbeginn, [s]
 tf = 300; % Integrationsende, [s]
 t = []; % Zeitwerte f�r Plot [s]
+h_array = [];
 d = []; % Fehler-Sch�tzwerte
 u = []; % Stellwerte u(t)
 y = []; % Ausgangswerte y(t)
@@ -25,8 +24,8 @@ ti = t0;
 i = 1;
 while ti <= tf
  
- if i > 1
-    h = stepWideControl(halt,Tm,ti,d,i);
+ if ti >= 1
+    h = stepWideControl(Tm, h, ti);
  end
  
  % Berechnung des Soll-Ausgangswertes: into WolframAlpha: y(t) =
@@ -62,8 +61,8 @@ while ti <= tf
  %approxd(i+1) = (h/6)*(k1-2*k2+k3)+d(i+1); %ist käse 
  
  t(i) = ti; % Zeitwert f�r Plot speichern
+ h_array(i) = h;
  ti = ti + h; % Zeitvariable um einen Schritt erh�hen
- halt = h;
  i = i + 1; % Index inkrementieren
 end
 
@@ -80,22 +79,33 @@ subplot(2,1,1); plot(t,y-ys,'.-'); title('GDF berechnet');zoom on;grid on;
 tit=sprintf('LDF geschätzt: max. Betrag = %g',max(abs(d)));
 subplot(2,1,2); plot(t,d,'.-'); title(tit);zoom on;grid on;
 xlabel('Zeit, s');
-   
-function h = stepWideControl(halt,Tm,ti,d,i)
+figure(3);
+plot(t,h_array,'.-'); title('h-Weite');zoom on;grid on;
 
+function h = stepWideControl(Tm, h_alt, ti)
+% y'''(t) = (1/200)*exp((1-t)/Tm) für ti >= 1, 0 sonst, monoton fallend
+d = ((h_alt^3)/6) * (1/200) * exp((1-ti)/Tm);   % Taylor nach Übungslösung ÜSim02 S.8
+epsilon = 5e-6;
+h_neu = h_alt*(epsilon/d)^(1/3);    % Gleichung 3.8 Script MODSIM SIM03
 
-epsilon = (halt^3/6)*abs((5/(3*Tm))*exp((1-ti)/Tm));
-hneu = halt*(epsilon/d(i))^(1/4)
+h_min = 0.001;
+h_max = 1;
 
-if hneu > 2*halt
+if h_neu > 2*h_alt
+    if h_neu < h_max
+        h = h_neu;    %continue integration with new stepsize
+    else
+        h = h_max;
+    end
     
-    h = hneu    %continue integration with new stepsize
-    
-elseif (hneu <= halt)
-        
-    h = 0,75*hneu;  %repeat last integration step with new stepsize
+elseif (h_neu <= h_alt)
+    if h_neu > h_min    
+        h = 0,75*h_neu;  %repeat last integration step with new stepsize
+    else
+        h = h_min;
+    end
     
 else
-    h = halt; %continue integration without change of stepsize
+    h = h_alt; %continue integration without change of stepsize
 end
 end

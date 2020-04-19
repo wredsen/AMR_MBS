@@ -53,12 +53,8 @@ while ti <= tf
  % m�ssen unter Beachtung von jeweiligen Zeitpunkten bestimmt werden!
  % Berechnung des Zustands-Sch�tzwertes x(ti+h)
  x(i+1) = x(i) + h*k2; %>>> erg�nzen ....
- % Berechnung der LDF Fehlerabsch�tzung d(ti+h) (nach Script MODSIM02 Gl. 2.26)
- k1_exakt = system_pt1( ti , ys(i) , u(i) , 1); %die Parameter einsetzen
- k2_exakt = system_pt1( ti + (h/2) , ys(i) + (h/2)*k1 , uStep(ti+(h/2)) , 1); % u(i) müsste eigentlich u(ti + h/2)
- k3_exakt = system_pt1( ti + h , ys(i) - h*k1 + 2*h*k2 , uStep(ti+h) , 1); % u(i) müsste eigentlich u(ti + h)
- d(i+1) = x(i+1) - x(i) - (h/6)*(k1_exakt + 4*k2_exakt + k3_exakt);
- %approxd(i+1) = (h/6)*(k1-2*k2+k3)+d(i+1); %ist käse 
+ % Berechnung der LDF Fehlerabsch�tzung d(ti+h) (nach Hinweis in MBS VL 3, es handelt sich um d^ (Dach))
+ d(i+1) = (h/6)*(k1-2*k2+k3); 
  
  t(i) = ti; % Zeitwert f�r Plot speichern
  h_array(i) = h;

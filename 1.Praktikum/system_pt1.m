@@ -6,7 +6,7 @@
 % Annahme: x(0) = y(0) = 0
 %
 %
-% zu erg�nzende Codezeilen sind mit ">>> erg�nzen ...." gekennzeichnet
+% zu ergaenzende Codezeilen sind mit ">>> ergaenzen ...." gekennzeichnet
 % Berechnung des Systems "PT1-Glied"
 %
 % (Hinweis: Die Struktur des Programms erlaubt eine Einbindung in
@@ -20,10 +20,10 @@ function [sys, x0] = system_pt1 ( t, x, u, flag )
 % flag - Steuerparameter, legt fest, welche Ausgabe
 % gefordert wird:
 Tm = 10; % Zeitkonstante des PT1-Gliedes
-if flag == 0 % Ausgabe der Anfangswerte f�r den
+if flag == 0 % Ausgabe der Anfangswerte fuer den
  % Zustand auf Vektor x0
- x0 = 0
- sys = [1,0,1,1,0,0];% diese Zeile ist nur f�r Simulink n�tig,
+ x0 = 0;
+ sys = [1,0,1,1,0,0];% diese Zeile ist nur fuer Simulink noetig,
  % sie gilt so NUR in diesem Beispiel!
 elseif abs(flag) == 1 % Ausgabe der Ableitungen von x auf
  % Vektor sys = x' = f(x(t),u(t),t)

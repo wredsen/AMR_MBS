@@ -85,7 +85,7 @@ end
 function h = stepWideControl(Tm, h_alt, d)
 epsilon = 5e-6;
 if d == 0
-    h_neu = h_alt;
+    h_neu = h_
 else  
     h_neu = h_alt*(epsilon/abs(d))^(1/3);    % Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
 end

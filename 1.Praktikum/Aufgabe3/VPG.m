@@ -9,6 +9,6 @@ function [x_VPG,y,d_RK3] = VPG(model_name,x,u,t,h)
 
 % estimation of next LDF d_(i+1) by RK3
 d_RK3 = (h/6)*(k1-2*k2+k3);
- 
+
 % VPG integration step
 x_VPG = x + h*k2;

@@ -29,6 +29,7 @@ x = [0 0 0];              % x ... system state vector
 
 % simulation
 i=1;
+repeat = 0; % repeats simulation step if != 0
 while t <= tf+h         %   loop t = t0...tf
     [x,y,d] = VPG(model_name,x,u,t,h);
     x_values(i,:) = x;
@@ -38,10 +39,11 @@ while t <= tf+h         %   loop t = t0...tf
     % only the hysteresis output LDF = system output is of interest
     ldf_values(i) = d(2);
     
-    %h = stepWideControl(h, d(2));  %TODO: Schrittweitensteuerung einbauen
-  
-    t = t + h;
-    i = i+1;
+    [h, repeat] = stepWideControl(h, d(2));  %TODO: Schrittweitensteuerung einbauen
+    if repeat == 0
+        t = t + h;
+        i = i+1;
+    end
 end % while
 
 % analytic impulsewidth and -period

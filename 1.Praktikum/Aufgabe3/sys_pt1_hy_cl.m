@@ -12,7 +12,7 @@ global memo;
 
 % u_ext = u_ext(t) modeled as internal part of the system
 ts = 2;
-epsilon_float = 0.1e-12;
+epsilon_float = 1e-12;
 if t < ts - epsilon_float
   u_ext = 0;
 else

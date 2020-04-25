@@ -5,7 +5,6 @@
 %
 % Annahme: x(0) = y(0) = 0
 %
-%
 % zu ergaenzende Codezeilen sind mit ">>> ergaenzen ...." gekennzeichnet
 % Berechnung des Systems "PT1-Glied"
 %
@@ -31,7 +30,7 @@ elseif abs(flag) == 1 % Ausgabe der Ableitungen von x auf
 elseif flag == 3 % Ausgabe der Ausgangswerte des
  % Systems auf Vektor sys:
  % sys = y = g(x(t),u(t),t)
- sys = x; %TODO: sinnvolle Annahme, dass y=x ?
+ sys = x;
 else % bei anderen Flagwerten nichts ausgeben
  sys = [];
 end

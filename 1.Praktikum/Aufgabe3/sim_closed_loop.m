@@ -1,5 +1,6 @@
 % MAIN SIMULATION PROGRAM: sim_closed_loop.m
 
+clear all;  % Workspace leeren
 % system parameter
 global Tm;  % time constant PT1 system
 Tm = 10;
@@ -22,34 +23,33 @@ uStep = 0.49;
 %simulation parameter
 t  = 0;                 % simulation start time
 tf = 20;                 % simulation stop time
-h  = 0.001;              % constant stepsize
-ts = 2;                 % step time
+h  = 0.02;              % constant stepsize
 
 % initial values
 x = [0 0 0];              % x ... system state vector
+h_array(1) = h;
+ldf_values(1) = 0;
 
 % simulation
 i=1;
-repeat = 0; % repeats simulation step if != 0
 while t <= tf+h         %   loop t = t0...tf
-    memo = backup_memo;
-    [x,y,d] = VPG(model_name,x,u,t,h);
+    
+    [x, y, h, d] = stepWideControl(model_name, h, t, x);  %TODO: Schrittweitensteuerung fixen
+    
     x_values(i,:) = x;
     y_values(i,:) = y;
     t_values(i)   = t;
-    h_array(i) = h;
+    h_array(i+1) = h;
     
-    % only the hysteresis output LDF = system output is of interest
-    ldf_values(i) = d;
+    ldf_values(i+1) = d;
     
-    [h, repeat] = stepWideControl(h, d);  %TODO: Schrittweitensteuerung fixen
+    t = t + h;
+    i = i+1;
     
-    if repeat == 0
-        t = t + h;
-        i = i+1;
-        backup_memo = memo;
-    end
 end % while
+% Trimmen der Plots
+h_array = h_array(1:end-1);
+ldf_values = ldf_values(1:end-1);
 
 % analytic impulsewidth and -period
 tau_e = -Tm * log(1-((he-ha)/(1+he-abs(uStep))));

@@ -1,6 +1,6 @@
 % STANDARD VPG 2 ORDER WITH RK3 LDF ESTIMATOR: VPG.m
 
-function [x_VPG,y,d_RK3] = VPG(model_name,x,u,t,h)
+function [x_VPG, y, d_RK3] = VPG(model_name,x, t, h)
 
 % derivatives
 [k1, y]   = feval(model_name, x,        t     );
@@ -12,3 +12,5 @@ d_RK3 = (h/6)*(k1-2*k2+k3);
 
 % VPG integration step
 x_VPG = x + h*k2;
+
+end

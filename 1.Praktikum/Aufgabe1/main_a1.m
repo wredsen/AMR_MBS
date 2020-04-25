@@ -7,11 +7,12 @@
 
 clear all % Loesche Arbeitsspeicher
 Tm = 10; % Konstante des PT1, [s]
-h = 0.1; % Schrittweite, (s)
-t0 = 0; % Integrationsbeginn, [s]
+global epsilon; % Konstante fuer sicheren Float-Vergleich an Sprungstelle
+epsilon = 0.00000001;
+h = 1.0; % Schrittweite, (s)
+t0 = 0;  % Integrationsbeginn, [s]
 tf = 300; % Integrationsende, [s]
 t = []; % Zeitwerte fuer Plot [s]
-h_array = [];
 d = []; % Fehler-Schuetzwerte
 u = []; % Stellwerte u(t)
 y = []; % Ausgangswerte y(t)
@@ -22,12 +23,11 @@ d(1) = 0;
 % Integration nach VPG-Methode
 ti = t0;
 i = 1;
-repeat = 0; % repeats simulation step if != 0
 while ti <= tf
     
  % Berechnung des Soll-Ausgangswertes: into WolframAlpha: 
  % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0
- if ti < 1
+ if ti < 1.0 - epsilon
     ys(i) = 0;
  else
     ys(i) = 5*(1-exp((1-ti)/Tm)); 
@@ -50,14 +50,10 @@ while ti <= tf
  % Berechnung der LDF Fehlerabschaetzung d(ti+h) (nach Hinweis in MBS VL 3, es handelt sich um d^ (Dach))
  d(i+1) = (h/6)*(k1-2*k2+k3); 
  
- [h, repeat] = stepWideControl(Tm, h, d(i+1));
+ t(i) = ti; % Zeitwert fuer Plot speichern
+ ti = ti + h; % Zeitvariable um einen Schritt erhoehen
+ i = i + 1; % Index inkrementieren
  
- if repeat == 0
-    t(i) = ti; % Zeitwert fuer Plot speichern
-    h_array(i) = h;
-    ti = ti + h; % Zeitvariable um einen Schritt erhoehen
-    i = i + 1; % Index inkrementieren
- end
 end
 
 d = d(1:end-1);
@@ -72,48 +68,13 @@ subplot(2,1,1); plot(t,y-ys,'.-'); title('GDF berechnet');zoom on;grid on;
 tit=sprintf('LDF geschätzt: max. Betrag = %g',max(abs(d)));
 subplot(2,1,2); plot(t,d,'.-'); title(tit);zoom on;grid on;
 xlabel('Zeit, s');
-figure(3);
-plot(t,h_array,'.-'); title('h-Weite');zoom on;grid on;
 
 % Berechnung des stetigen Stellwerts u(t) für den Funktionsaufruf mit halber Schrittweite
 function outU = uStep(t)
-    if t < 1
+    global epsilon;
+    if t < 1.0 - epsilon
         outU = 0;
     else 
         outU = 5;
     end
 end 
-
-function [h, repeat] = stepWideControl(Tm, h_alt, d)
-repeat = 0;
-epsilon = 5e-6;
-
-if d ~= 0  
-    h_neu = h_alt*(epsilon/abs(d))^(1/3);    % Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
-
-    h_min = 0.001;
-    h_max = 1;
-
-    if h_neu > 2*h_alt       %continue integration with new stepsize
-        if h_neu < h_max  
-            h = h_neu;   
-        else
-            h = h_max;
-        end
-
-    elseif (h_neu <= h_alt)
-        if (0.75*h_neu) > h_min         %repeat last integration step with new stepsize
-            h = 0.75*h_neu;
-            repeat = 1;
-        else
-            h = h_min;  % TODO should integration step be repeated here?
-        end
-
-    else
-        h = h_alt; %continue integration without change of stepsize
-    end
-else
-    h = h_alt;  % case: LDF d=0
-end
-
-end

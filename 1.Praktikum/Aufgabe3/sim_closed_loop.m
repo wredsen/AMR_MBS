@@ -12,8 +12,9 @@ he = 0.085;
 model_name = 'sys_pt1_hy_cl';
 u = 0;          % input modeled in the topology file!
 
-global memo;    % global variable for hysteresis output
-memo = 0;
+global memo;    % global variable to memorize hysteresis output
+global backup_memo; % Hysterese Zustand speichern fuer wiederholte Berechnungen
+backup_memo = 0;
 
 global uStep;
 uStep = 0.49;
@@ -21,7 +22,7 @@ uStep = 0.49;
 %simulation parameter
 t  = 0;                 % simulation start time
 tf = 20;                 % simulation stop time
-h  = 0.02;              % constant stepsize
+h  = 0.001;              % constant stepsize
 ts = 2;                 % step time
 
 % initial values
@@ -31,18 +32,22 @@ x = [0 0 0];              % x ... system state vector
 i=1;
 repeat = 0; % repeats simulation step if != 0
 while t <= tf+h         %   loop t = t0...tf
+    memo = backup_memo;
     [x,y,d] = VPG(model_name,x,u,t,h);
     x_values(i,:) = x;
     y_values(i,:) = y;
     t_values(i)   = t;
+    h_array(i) = h;
     
     % only the hysteresis output LDF = system output is of interest
-    ldf_values(i) = d(2);
+    ldf_values(i) = d;
     
-    [h, repeat] = stepWideControl(h, d(2));  %TODO: Schrittweitensteuerung einbauen
+    [h, repeat] = stepWideControl(h, d);  %TODO: Schrittweitensteuerung fixen
+    
     if repeat == 0
         t = t + h;
         i = i+1;
+        backup_memo = memo;
     end
 end % while
 
@@ -66,3 +71,6 @@ plot(t_values, y_values(:,3),'.-'); title('output PT1');zoom on;grid on;
 
 figure(4);
 plot(t_values, ldf_values(:),'.-'); title('RK3 estimatet LDF');zoom on;grid on;
+
+figure(5);
+plot(t_values,h_array,'.-'); title('h-Weite');zoom on;grid on;

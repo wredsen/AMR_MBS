@@ -12,27 +12,27 @@ global he;
 % output equation    
     if memory == -1
         if u < -ha
-            y(1) = (-1); %*u(1);
+            y = (-1);
         else
-            y(1) = 0;
+            y = 0;
         end
     end
     
     if memory == 0
         if (u > -he) && (u < he)
-            y(1) = 0;
+            y = 0;
         elseif u >= he
-            y(1) = 1; %u(1);
+            y = 1;
         elseif u <= -he
-            y(1) = (-1); % * u(1);
+            y = (-1);
         end
     end
     
     if memory == 1
         if u > ha 
-            y(1) = 1; %u(1);
+            y = 1; %u(1);
         else 
-            y(1) = 0; 
+            y = 0; 
         end
     end 
 

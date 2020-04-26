@@ -1,26 +1,32 @@
-% MODSIM Laborpraktikum, 1. Aufgabe
+% MODSIM Laborpraktikum, 2. Aufgabe
 % Prof. K. Janschek, Dr.-Ing. Th. Range, Dr.-Ing. S. Dyblenko
-%y(t) = c_1 e^(-t/10) - 5 e^((1 - t)/10) θ(t - 1) + 5 θ(t - 
-% main_a1.m - Realisierung der VPG-Methode mit Fehlerschaetzung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% main_a2.m - Realisierung der VPG-Methode mit Fehlerschaetzung
+% und Schrittweitensteuerung
 % für PT1-Glied
-% zu ergänzende Codezeilen sind mit ">>> ergänzen ...." und ...gekennzeichnet
 
 clear all % Loesche Arbeitsspeicher
 global epsilon_float; % Konstante fuer sicheren Float-Vergleich an Sprungstelle
-epsilon_float = 0.1e-12;
+epsilon_float = 1e-12;                                                                      
 global Tm;  % Konstante des PT1, [s]
 Tm = 10; 
-h = 0.1; % Schrittweite, (s)
+h = 0.1; % Initialisierung Schrittweite, (s)
 t0 = 0; % Integrationsbeginn, [s]
 tf = 300; % Integrationsende, [s]
 t = []; % Zeitwerte fuer Plot [s]
-h_array = [];
+h_array = []; % Schrittweiten fuer Plot
 d = []; % Fehler-Schuetzwerte
 u = []; % Stellwerte u(t)
 global deltaU; % Sprunghoehe am Eingang
 deltaU = 5;
 y = []; % Ausgangswerte y(t)
-ys = []; % Soll-Ausgangswerte y_soll(t)
+ys = []; % Analytische Ausgangswerte y_s(t)
 % Initialisierung
 [dum,x(1)] = system_pt1([],[],[],0);
 d(1) = 0;
@@ -30,8 +36,8 @@ i = 1;
 
 while ti <= tf
     
- % Berechnung des Soll-Ausgangswertes: into WolframAlpha: 
- % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0
+ % Berechnung des Soll-Ausgangswertes: 
+ % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0                            % TODO: in Beleg erklären
  if ti < 1.0 - epsilon_float
     ys(i) = 0;
  else
@@ -41,7 +47,8 @@ while ti <= tf
  % Berechnung des Stellwertes fuer den Plot
  u(i) = uStep(ti); 
  
- [h, x, d(i+1)] = stepWideControl(h, i, ti, x);
+ % Berechnung von neuer Schrittweite, Zustand, LDF
+ [h, x, d(i+1)] = stepWidthControl(h, i, ti, x);
  
  % Berechnung des Ausgangswertes
  y(i) = system_pt1( ti , x(i) , uStep(ti) , 3); %die Parameter einsetzen
@@ -81,44 +88,43 @@ function outU = uStep(t)
     end
 end 
 
-function [h, x, LDF] = stepWideControl(h, i, ti, x)
+function [h, x, LDF] = stepWidthControl(h, i, ti, x)
 
 repeat = 1;
 
 while repeat == 1
     
-    % Berechnung der Koeffizienten fuer VPG-Methode(aus VL, Übungslösung Sim02)
-    k1 = system_pt1( ti , x(i) , uStep(ti) , 1); %die Parameter einsetzen
+    % Berechnung der Koeffizienten fuer VPG-Methode
+    k1 = system_pt1( ti , x(i) , uStep(ti) , 1); 
     k2 = system_pt1( ti + (h/2) , x(i) + (h/2)*k1 , uStep(ti+(h/2)) , 1);
     k3 = system_pt1( ti + h , x(i) - h*k1 + 2*h*k2 , uStep(ti+h) , 1);
     % Wichtiger Hinweis: Die Parameter bei den Aufrufen von system_pt1(...)
     % muessen unter Beachtung von jeweiligen Zeitpunkten bestimmt werden!
     
-    % Berechnung des Zustands-Schaetzwertes x(ti+h)
-    x(i+1) = x(i) + h*k2; 
     % Berechnung der LDF Fehlerabschaetzung d(ti+h) (nach Hinweis in MBS VL 3, es handelt sich um d^ (Dach))
     LDF = (h/6)*(k1-2*k2+k3);
     
     global deltaU;
     global Tm;
-    epsilon = 5e-6;
+    epsilon = 5e-6;     % maximal toleriertes LDF
 
-    h_min = epsilon*6/(deltaU/Tm);      % -> Beleg
-    h_max = 2*Tm;                       % -> Beleg
-
+    h_min = epsilon*6/(deltaU/Tm);                                                                                % -> Beleg erklären
+    h_max = 2*Tm;                                                                                                 % -> Beleg erklären
+    
+    % Schrittweitenalgorithmus nach MODSIM SIM03
     if LDF ~= 0  
-        h_neu = h*(epsilon/abs(LDF))^(1/3);    % Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
-        if h_neu < h_min
-            h_neu = h_min;
-        elseif h_neu > h_max
-            h_neu = h_max;
+        h_new = h*(epsilon/abs(LDF))^(1/3);                                         % Beleg -> Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
+        if h_new < h_min
+            h_new = h_min;
+        elseif h_new > h_max
+            h_new = h_max;
         end
 
-        if h_neu > 2*h          %continue integration with new stepsize  
-            h = h_neu;   
+        if h_new > 2*h          %continue integration with new stepsize  
+            h = h_new;   
             repeat = 0;
-        elseif h_neu <= h       %repeat last integration step with new stepsize        
-            h = 0.75*h_neu;
+        elseif h_new <= h       %repeat last integration step with new stepsize        
+            h = 0.75*h_new;
         else                    %continue integration without change of stepsize
             h = h;             
             repeat = 0;
@@ -126,6 +132,9 @@ while repeat == 1
     else                        %falls LDF d=0
         repeat = 0;
     end
+    
+    % Berechnung des Zustands-Schaetzwertes x(ti+h)
+    x(i+1) = x(i) + h*k2; 
     
 end
 end

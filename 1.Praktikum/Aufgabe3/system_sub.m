@@ -1,5 +1,12 @@
-% SUBSYSTEM DESCRIPTION: system_1.m
-% Subtraction Block
+% SUBSYSTEM DESCRIPTION: system_sub.m
+% Addier-Block
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function  [xdot,y] = system_sub(x,u,t)
 

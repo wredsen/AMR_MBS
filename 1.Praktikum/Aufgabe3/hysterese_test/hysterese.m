@@ -1,4 +1,11 @@
-% MAIN SIMULATION PROGRAM: hysterese.m
+% Test des Hysterese-Blocks: hysterese.m
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % system I/O
 u_values = [];  % input

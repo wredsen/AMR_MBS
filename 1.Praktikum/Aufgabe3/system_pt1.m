@@ -1,5 +1,12 @@
-% SUBSYSTEM DESCRIPTION: system_3.m
-% PT1 Block
+% SUBSYSTEM DESCRIPTION: system_pt1.m
+% PT1-Block
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function  [xdot,y] = system_pt1(x,u,t)
 

@@ -1,14 +1,21 @@
 % STEPWIDTH CONTROL ALGORITHM:stepWidthControl.m
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [x, y, h, LDF] = stepWideControl(model_name, h, ti, x_in)  
+function [x, y, h, LDF] = stepWidthControl(model_name, h, ti, x_in)  
 
 global Tm;
-global uStep;
+global u_step;
 global memo;
 global backup_memo;
 
 epsilon = 5e-10;      % kleineres maximales LDF, da Hystereseausgang sonst nicht diskret 1 oder 0, TODO: ist das so?
-h_min = epsilon*6/(uStep/Tm);   % -> Beleg, TODO: ist diese hier richtig?, damit epsilon eingehalten wird muss es kleiner gewählt werden...
+h_min = epsilon*6/(u_step/Tm);   % -> Beleg, TODO: ist diese hier richtig?, damit epsilon eingehalten wird muss es kleiner gewählt werden...
 h_max = 2*Tm;                   % -> Beleg
 
 repeat = 1;

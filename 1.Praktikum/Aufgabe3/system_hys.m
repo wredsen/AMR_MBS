@@ -1,5 +1,12 @@
-% SUBSYSTEM DESCRIPTION: system_2.m
-% Hysteresis Block
+% SUBSYSTEM DESCRIPTION: system_hys.m
+% Hysterese Block
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gruppe 10:
+% Nils Leimbach
+% Konstantin Kuhl
+% Sebastian Schwabe
+% Konstantin Wrede
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function  [xdot,y] = system_hys(x,u,t, memory)
 

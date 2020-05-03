@@ -1,8 +1,8 @@
 % STEPWIDTH CONTROL ALGORITHM:stepWidthControl.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -10,12 +10,11 @@
 function [x, y, h, LDF] = stepWidthControl(model_name, h, ti, x_in)  
 
 global Tm;
-global u_step;
 global memo;
 global backup_memo;
 
 epsilon = 5e-10;      % kleineres maximales LDF, da Hystereseausgang sonst nicht diskret 1 oder 0, TODO: ist das so?
-h_min = epsilon*6/(u_step/Tm);   % -> Beleg, TODO: ist diese hier richtig?, damit epsilon eingehalten wird muss es kleiner gewählt werden...
+h_min = epsilon*6/(1/Tm);   % Eingang von PT1-Glied ist hier 1!
 h_max = 2*Tm;                   % -> Beleg
 
 repeat = 1;
@@ -28,8 +27,8 @@ while repeat == 1
         h_neu = h*(epsilon/abs(LDF))^(1/3);    % Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
         if h_neu < h_min
             h_neu = h_min;
-        elseif h_neu > h_max
-            h_neu = h_max;
+        elseif h_neu >= h_max
+            h_neu = 0.99*h_max;     
         end
 
         if h_neu > 2*h          %continue integration with new stepsize  
@@ -43,7 +42,7 @@ while repeat == 1
         end
     else                        %falls LDF d=0
         h = h;
-        repeat = 0;             % TODO: Forenbeitrag: hier sollte h = h_max sein
+        repeat = 0;         
     end
 end
 

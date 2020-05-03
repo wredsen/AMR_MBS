@@ -2,8 +2,8 @@
 % Prof. K. Janschek, Dr.-Ing. Th. Range, Dr.-Ing. S. Dyblenko
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,6 +12,7 @@
 % für PT1-Glied
 
 clear all % Loesche Arbeitsspeicher
+tic
 global epsilon_float; % Konstante fuer sicheren Float-Vergleich an Sprungstelle
 epsilon_float = 1e-12;                                                                      
 global Tm;  % Konstante des PT1, [s]
@@ -37,7 +38,7 @@ i = 1;
 while ti <= tf
     
  % Berechnung des Soll-Ausgangswertes: 
- % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0                            % TODO: in Beleg erklären
+ % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0
  if ti < 1.0 - epsilon_float
     ys(i) = 0;
  else
@@ -60,6 +61,7 @@ while ti <= tf
  i = i + 1; % Index inkrementieren
 
 end
+toc
 
 d = d(1:end-1);
 result = [t;d];
@@ -69,12 +71,14 @@ subplot(2,1,1); plot(t,u); title('Eingang PT1-Glied');zoom on;grid on;
 subplot(2,1,2); plot(t,y); title('Ausgang PT1-Glied');zoom on;grid on;
 xlabel('Zeit, s');
 figure(2);
-subplot(2,1,1); plot(t,y-ys,'.-'); title('GDF berechnet');zoom on;grid on;
+subplot(2,1,1); plot(t,ys-y,'.-'); title('GDF berechnet');zoom on;grid on;
 tit=sprintf('LDF geschätzt: max. Betrag = %g',max(abs(d)));
 subplot(2,1,2); plot(t,d,'.-'); title(tit);zoom on;grid on;
 xlabel('Zeit, s');
 figure(3);
 plot(t,h_array,'.-'); title('h-Weite');zoom on;grid on;
+xlabel('Zeit, s');
+ylabel('h, s');
 
 % Berechnung des stetigen Stellwerts u(t) für den Funktionsaufruf mit halber Schrittweite
 function outU = uStep(t)
@@ -108,16 +112,16 @@ while repeat == 1
     global Tm;
     epsilon = 5e-6;     % maximal toleriertes LDF
 
-    h_min = epsilon*6/(deltaU/Tm);                                                                                % -> Beleg erklären
-    h_max = 2*Tm;                                                                                                 % -> Beleg erklären
+    h_min = epsilon*6/(deltaU/Tm);                                                                                
+    h_max = 2*Tm;                                                                                                 
     
     % Schrittweitenalgorithmus nach MODSIM SIM03
     if LDF ~= 0  
-        h_new = h*(epsilon/abs(LDF))^(1/3);                                         % Beleg -> Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
+        h_new = h*(epsilon/abs(LDF))^(1/3); %Gleichung 3.8 Script MODSIM SIM03, p = p1 = 2
         if h_new < h_min
             h_new = h_min;
-        elseif h_new > h_max
-            h_new = h_max;
+        elseif h_new >= h_max
+            h_new = 0.99*h_max;             %streng kleiner h_max s. VL
         end
 
         if h_new > 2*h          %continue integration with new stepsize  

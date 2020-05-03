@@ -2,8 +2,8 @@
 % Dr.-Ing. Th. Range, Dr.-Ing. S. Dyblenko
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

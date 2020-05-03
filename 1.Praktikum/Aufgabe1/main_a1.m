@@ -2,16 +2,18 @@
 % Prof. K. Janschek, Dr.-Ing. Th. Range, Dr.-Ing. S. Dyblenko
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % main_a1.m - Realisierung der VPG-Methode mit Fehlerschaetzung für PT1-Glied
+
 clear all % Loesche Arbeitsspeicher
+tic
 Tm = 10; % Konstante des PT1, [s]
 global epsilon_float; % Konstante fuer sicheren Float-Vergleich an Sprungstelle
-epsilon_float = 1e-12;                                                              % TODO: in Beleg erklären
+epsilon_float = 1e-12;            
 h = 0.1; % Schrittweite, (s)
 t0 = 0;  % Integrationsbeginn, [s]
 tf = 300; % Integrationsende, [s]
@@ -58,6 +60,7 @@ while ti <= tf
  i = i + 1; % Index inkrementieren
  
 end
+toc
 
 d = d(1:end-1);
 result = [t;d];
@@ -67,13 +70,13 @@ subplot(2,1,1); plot(t,u); title('Eingang PT1-Glied');zoom on;grid on;
 subplot(2,1,2); plot(t,y); title('Ausgang PT1-Glied');zoom on;grid on;
 xlabel('Zeit, s');
 figure(2);
-subplot(2,1,1); plot(t,y-ys,'.-'); title('GDF berechnet');zoom on;grid on;
+subplot(2,1,1); plot(t,ys-y,'.-'); title('GDF berechnet');zoom on;grid on;
 tit=sprintf('LDF geschätzt: max. Betrag = %g',max(abs(d)));
 subplot(2,1,2); plot(t,d,'.-'); title(tit);zoom on;grid on;
 xlabel('Zeit, s');
 
 % Berechnung des stetigen Stellwerts u(t) fuer den Funktionsaufruf mit halber Schrittweite
-function outU = uStep(t)                                                                          % TODO: in Beleg erklären
+function outU = uStep(t)
     global epsilon_float;
     if t < 1.0 - epsilon_float
         outU = 0;

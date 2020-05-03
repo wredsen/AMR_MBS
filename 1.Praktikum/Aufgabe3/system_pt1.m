@@ -2,8 +2,8 @@
 % PT1-Block
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,13 +1,14 @@
 % MAIN SIMULATION PROGRAM: sim_closed_loop.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
-% Nils Leimbach
 % Konstantin Kuhl
+% Nils Leimbach
 % Sebastian Schwabe
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;  % Loesche Arbeitsspeicher
+tic
 % system parameter
 global Tm;  % PT1-Zeitkonstante
 Tm = 10;
@@ -26,12 +27,12 @@ global backup_memo; % Hysterese Zustand speichern fuer wiederholte Berechnungen
 backup_memo = 0;
 
 global u_step;   % Sprunghoehe des Eingangs
-u_step = 0.49;   
+u_step = 0.17;   
 
 %simulation parameter
 t  = 0;                 % simulation start time
 tf = 20;                % simulation stop time
-h  = 3;                 % Initiale Schrittweite
+h  = 0.1;                 % Initiale Schrittweite
 
 % initial values
 x = [0 0 0];            % x ... system state vector
@@ -55,6 +56,7 @@ while t <= tf+h         %   loop t = t0...tf
     i = i+1;
     
 end % while
+toc
 % Trimmen der Plots
 h_array = h_array(1:end-1);
 ldf_values = ldf_values(1:end-1);
@@ -75,5 +77,5 @@ xlabel('Zeit, s');
 
 figure(2);
 subplot(2,1,1); plot(t_values, ldf_values(:),'.-'); title('LDF nach RK3');zoom on;grid on;
-subplot(2,1,2); plot(t_values,h_array,'.-'); title('h-Weite');zoom on;grid on;
+subplot(2,1,2); plot(t_values,h_array,'.-'); title('h-Weite, s');zoom on;grid on;
 xlabel('Zeit, s');

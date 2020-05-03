@@ -1,0 +1,21 @@
+u = 0.17			//	Simulation
+impulse width: 0.221003 s	//	0.2267
+impulse period: 2.334094 s 	//	2.3966
+Dauer: 0.263418 seconds
+-----------------
+u = 0.49
+impulse width: 0.341914 s  	//	0.3263
+impulse period: 0.823935 s 	//	0.8243
+
+-----------------
+u = -0.25
+impulse width: 0.242436 s  	//	0.2224
+impulse period: 1.386540 s 	//	1.3957
+
+h_0 = 0.1
+_______________________
+		
+h = const. = 0.01, u = 0.17	
+impulse width: 0.221003 s	//	0.2200	
+impulse period: 2.334094 s 	//	2.3200
+Dauer:	0.456894 seconds	

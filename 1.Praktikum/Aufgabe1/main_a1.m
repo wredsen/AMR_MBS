@@ -31,7 +31,7 @@ i = 1;
 while ti <= tf
     
  % Analytische Berechnung des Ausgangswertes:
- % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0
+ % y(t) = 5*UnitStep(t-1) - 10*y'(t), AB: y(0) = x(0) = 0   
  if ti < 1.0 - epsilon_float
     ys(i) = 0;
  else

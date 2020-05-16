@@ -1,21 +1,32 @@
-u = 0.17			//	Simulation
-impulse width: 0.221003 s	//	0.2267
-impulse period: 2.334094 s 	//	2.3966
+u = 0.17			//	Simulation		relativer Fehler in %
+impulse width: 0.221003 s	//	0.2267		//	2.58	
+impulse period: 2.334094 s 	//	2.3966		//	2.68
 Dauer: 0.263418 seconds
 -----------------
 u = 0.49
-impulse width: 0.341914 s  	//	0.3263
-impulse period: 0.823935 s 	//	0.8243
+impulse width: 0.341914 s  	//	0.3263		//	4.57	
+impulse period: 0.823935 s 	//	0.8243		//	0.04
 
 -----------------
 u = -0.25
-impulse width: 0.242436 s  	//	0.2224
-impulse period: 1.386540 s 	//	1.3957
+impulse width: 0.242436 s  	//	0.2224		//	8.26
+impulse period: 1.386540 s 	//	1.3957		//	0.66
 
 h_0 = 0.1
 _______________________
 		
 h = const. = 0.01, u = 0.17	
-impulse width: 0.221003 s	//	0.2200	
-impulse period: 2.334094 s 	//	2.3200
+impulse width: 0.221003 s	//	0.2200		//	0.45	
+impulse period: 2.334094 s 	//	2.3200		//	0.6
+
 Dauer:	0.456894 seconds	
+h = const. = 0.01, u = 0.49
+impulse width: 0.341914 s  	//	0.3500		//	2.36
+impulse period: 0.823935 s 	//	0.8200		//	0.48
+
+u = -0.25
+h = const. = 0.01, u = -0.25
+impulse width: 0.242436 s  	//	0.2400		//	1.00
+impulse period: 1.386540 s 	//	1.3725		//	1.01
+
+

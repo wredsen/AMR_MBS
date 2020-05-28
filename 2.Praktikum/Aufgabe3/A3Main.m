@@ -45,7 +45,7 @@ figure(1);
 dbode(A_d, B_d, C_d, D_d, T_a, 1, logspace(-1, 1, 1000));
 grid;
 
-K_I_controller = 0.275; % nicht-linear zeitkontinuierlich 0.316
+K_I_controller = 0.275;
 
 %%%%%% Überschwingen des Geschlossenen Regelkreises %%%%%% 
 U_step = 0.5;

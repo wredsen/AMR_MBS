@@ -38,7 +38,7 @@ h_matrix = inv(A) * (phi_matrix - eye(size(phi_matrix,1))) * B
 
 % Vergleich lineares zeitdiskretes Modell und 
 % nichtlineares zeitkontinuierliches Modell
-U_step = 5e-4;
+U_step = 5e-4;                  % im Beleg fuer U_step = 10e-4, 5*10e-4 und 10e-3 dargestellt
 load_system('ModellVergleich2');
 sim('ModellVergleich2');
 

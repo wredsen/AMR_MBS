@@ -7,7 +7,7 @@
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [out] = AnalyticU2(t)
+function out = AnalyticU2(t)
 global R;
 global C1;
 global C2;

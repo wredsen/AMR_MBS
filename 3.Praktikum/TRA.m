@@ -7,25 +7,25 @@
 % Konstantin Wrede
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [z_n_next, x_n_next] = TRA(u_n, x_n, z_n, t, J_inv)
+function [z_i_next, x_i_next, iterations_newton] = TRA(u_i, x_i, z_i, J_inv)
 
 %%%% Newton-Raphson-Verfahren %%%%
 epsilon = 1e-5; % Toleranzschranke
-max_iterations = 10; % maximale Iterationen pro Schritt
-p_n = [x_n, z_n]';
+max_iterations = 5; % maximale Iterationen pro Schritt
+p_n = [x_i, z_i]';
 
-i = 0;
+n = 0;
 while(1)
-    i = i + 1;
-    phi_n = phi(x_n', z_n', u_n, p_n, t);
+    n = n + 1;
+    phi_n = phi(x_i', z_i', u_i, p_n);
     p_n_next = p_n - J_inv * phi_n;
     
-    delta_inf_norm = norm(J_inv * phi_n);                          %%%% ggf. noch norm(..., inf)
-    if (delta_inf_norm < epsilon)        
+    step_difference = norm(J_inv * phi_n);                
+    if (step_difference < epsilon)        
         break;
     end
     
-    if i > max_iterations
+    if n > max_iterations
         fprintf("Maximale Iterationsanzahl ueberschritten");
         break;
     end
@@ -34,36 +34,37 @@ while(1)
     
 end
 
-x_n_next = p_n_next(1:2);
-z_n_next = p_n_next(3:6);
+x_i_next = p_n_next(1:2);
+z_i_next = p_n_next(3:6);
+iterations_newton = n;
 
 end
 
 %%%%%%% Subfunktionen fuer TRA %%%%%%%
 
-function phi_i_next = phi(x_i, z_i, u, p, t)
+function out = phi(x_i, z_i, u, p)
 global h;
 
 x_i_next = p(1:2);
 z_i_next = p(3:6); 
 
-phi_i_next(1:2, 1) = x_i_next - x_i - (h / 2) * (f_differential(x_i, z_i, t) + f_differential(x_i_next, z_i_next, t));
-phi_i_next(3:6, 1) = g_algebraic(x_i_next, z_i_next, u, t);
+out(1:2, 1) = x_i_next - x_i - (h / 2) * (f_differential(x_i, z_i) + f_differential(x_i_next, z_i_next));
+out(3:6, 1) = g_algebraic(x_i_next, z_i_next, u);
 
 end
 
-function x_dot = f_differential(x, z, t)
+function out = f_differential(x, z)
 global C1;
 global C2;
 
-x_dot = [z(1)/C1, z(2)/C2]';
+out = [z(1)/C1, z(2)/C2]';
 
 end
 
-function g = g_algebraic(x,z,u,t)        
+function out = g_algebraic(x,z,u)        
 global R;
 
-g = [   R * z(4) - z(3),
+out = [   R * z(4) - z(3),
         x(1) + z(3) - u,
         x(1) - x(2),                           
         z(1) + z(2) - z(4)  ]';

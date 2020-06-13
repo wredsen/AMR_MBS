@@ -1,4 +1,4 @@
-% MAIN SIMULATION PROGRAM: DAESimulation.m
+% MAIN SIMULATION PROGRAM OF DAE SYSTEM: main.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gruppe 10:
 % Konstantin Kuhl
@@ -40,31 +40,33 @@ h = single(h);
 z = single(z);
 x = single(x);
 us = single(us);
-u2_values(1) = 0;
+
+u2_ana_values(1) = 0;
 u2_errors(1) = 0;
+newton_iter(1) = 0;
 
 % Berechnung der Jacobi-Matrix
 [J, J_inv] = JacobiMatrix();
 
 % simulation
 tic;
-n = 1;
+i = 1;
 while t <= tf+h         %   loop t = t0...tf
     
     % Berechnung Folgezustand / algebraische Variablen mit TRA und Newton-Raphson
-    [z(n+1, :), x(n+1, :)] = TRA(us(n), x(n, :), z(n, :), t, J_inv);  
+    [z(i+1, :), x(i+1, :), newton_iter(i+1)] = TRA(us(i), x(i, :), z(i, :), J_inv);  
     
     % Eingang ist konstanter Sprung bei ts = 0
-    us(n+1) = 10;
+    us(i+1) = 10;
     
     t = t + h;
-    n = n + 1;
+    i = i + 1;
     
     % analytischer Vergleichswert und Abweichung
-    u2_values(n) = AnalyticU2(t);
-    u2_errors(n) = x(n,2) - u2_values(n);
+    u2_ana_values(i) = AnalyticU2(t);
+    u2_errors(i) = x(i,2) - u2_ana_values(i);
     
-    t_values(n) = t;
+    t_values(i) = t;
     
 end % while
 toc;
@@ -72,12 +74,18 @@ toc;
 
 % result visualisation
 figure(1);
-subplot(4,1,1); plot(t_values, x(:,2),'.-', t_values, u2_values, '.-'); 
-legend("u2 approx", "u2 analytic");title('u2 approx and u2 analytic');zoom on;grid on;
-subplot(4,1,2); plot(t_values, u2_errors,'.-'); title('u2 error');zoom on;grid on;
-subplot(4,1,3); plot(t_values, us,'.-', t_values, u2_values, '.-'); 
-legend("u_s ", "u2 analytic");title('u_s and u2 analytic');zoom on;grid on;
-subplot(4,1,4); plot(t_values, x(:,1),'.-', t_values, x(:,2), '.-'); 
-legend("u1 approx ", "u2 approx");title('u1 and u2 approx');zoom on;grid on;
+subplot(4,1,1); plot(t_values, us,'.-', t_values, u2_ana_values, '.-'); 
+legend("us ", "u2");title('Eingang Us und Ausgang U2 analytisch');zoom on;grid on;
+subplot(4,1,2); plot(t_values, x(:,1),':', t_values, x(:,2), '--'); 
+legend("u1", "u2");title('Ausgang U1 und U2 simuliert');zoom on;grid on;
+subplot(4,1,3); plot(t_values, u2_errors,'.-'); title('Differenz von analytischem und simuliertem U2');zoom on;grid on;
 xlabel('Zeit, s');
 
+figure(2)
+plot(t_values, newton_iter,'.-'); title('Anzahl der Newton-Raphson-Iterationen');zoom on;grid on;
+xlabel('Zeit, s');
+
+figure(3)
+title_string = "GDF von U2 bei h = " + h + "";
+plot(t_values, u2_errors,'.-'); title(title_string);zoom on;grid on;
+xlabel('Zeit, s');

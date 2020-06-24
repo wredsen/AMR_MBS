@@ -20,18 +20,17 @@ while(1)
     phi_n = phi(x_i', z_i', u_i, p_n);
     p_n_next = p_n - J_inv * phi_n;
     
+    if n > max_iterations
+        fprintf("Maximale Iterationsanzahl %d ueberschritten \n", max_iterations);
+        break;
+    end
+    
     step_difference = norm(J_inv * phi_n);                
     if (step_difference < epsilon)        
         break;
     end
     
-    if n > max_iterations
-        fprintf("Maximale Iterationsanzahl ueberschritten");
-        break;
-    end
-    
     p_n = p_n_next;
-    
 end
 
 x_i_next = p_n_next(1:2);
@@ -57,14 +56,14 @@ function out = f_differential(x, z)
 global C1;
 global C2;
 
-out = [z(1)/C1, z(2)/C2]';
+out = [ z(1)/C1, z(2)/C2]';
 
 end
 
 function out = g_algebraic(x,z,u)        
 global R;
 
-out = [   R * z(4) - z(3),
+out = [ R * z(4) - z(3),
         x(1) + z(3) - u,
         x(1) - x(2),                           
         z(1) + z(2) - z(4)  ]';

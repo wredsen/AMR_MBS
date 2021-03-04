@@ -1,2 +1,2 @@
 # AMR_MBS
-Praktikum Modellbildung uns Simulation
+Praktikum Modellbildung und Simulation
